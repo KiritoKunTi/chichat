@@ -189,6 +189,74 @@
     }
     .chat{
       flex: 2;
+
+      .chat__info {
+        height: 50px;
+        background-color: #5d5b8d;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        color: lightgray;
+      }
+      .chat__icons{
+        display: flex;
+        gap: 12px;
+        .icon{
+          cursor: pointer;
+        }
+      }
+
+      .messages{
+        background-color: #ddddf7;
+        padding: 10px;
+        height: calc(100% - 100px);
+      }
+
+      .input{
+        height: 50px;
+        background-color: white;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        input{
+          width: 100%;
+          border: none;
+          outline: none;
+          color: #2f2d52;
+          font-size: 18px;
+
+          &::placeholder{
+            color: lightgray;
+          }
+        }
+        .send{
+          display: flex;
+          align-items: center;
+          gap: 10px;
+
+          .icon{
+            cursor: pointer;
+            color: #ccc;
+            &:hover{
+              color: #2f2d52;
+            }
+          }
+          button{
+            border: none;
+            outline: none;
+            color: white;
+            padding: 10px 15px;
+            background-color: #8da4f1;
+
+            &:hover{
+              background-color: #5d5b8d;
+            }
+          }
+        }
+      }
     }
   }
 }
