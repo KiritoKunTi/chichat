@@ -3,7 +3,7 @@ import { FcAddImage } from "react-icons/fc";
 import { auth, storage, db } from "../firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, setDoc, doc } from "firebase/firestore";
 
 const Register = () => {
   const [error, setError] = useState("");
@@ -30,7 +30,8 @@ const Register = () => {
             displayName,
             photoURL: downloadURL,
           });
-          await addDoc(collection(db, "users"), {
+          await setDoc(doc(db, "users", response.user.uid), {
+            // await addDoc(collection(db, "users", [response.user.uid]), {
             uid: response.user.uid,
             displayName,
             email,
