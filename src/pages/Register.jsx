@@ -3,10 +3,12 @@ import { FcAddImage } from "react-icons/fc";
 import { auth, storage, db } from "../firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { addDoc, collection, setDoc, doc } from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
+import { useNavigate, Link } from "react-router-dom";
 
 const Register = () => {
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,12 +33,14 @@ const Register = () => {
             photoURL: downloadURL,
           });
           await setDoc(doc(db, "users", response.user.uid), {
-            // await addDoc(collection(db, "users", [response.user.uid]), {
             uid: response.user.uid,
             displayName,
             email,
             photoURL: downloadURL,
           });
+          await setDoc(doc(db, "userChats", response.user.uid), {});
+
+          navigate("/");
         });
       });
     } catch (error) {
@@ -60,7 +64,9 @@ const Register = () => {
           </label>
           <button>Sign Up</button>
         </form>
-        <p>Already have an account? Login</p>
+        <p>
+          Already have an account? <Link to="/login">Login</Link>
+        </p>
         {error && <span>{error}</span>}
       </div>
     </div>
