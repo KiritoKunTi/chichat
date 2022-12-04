@@ -1,38 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
+import { onSnapshot, doc } from "firebase/firestore";
+import { useEffect } from "react";
+import { UserAuth } from "../contexts/AuthContext";
+import { db } from "../firebase";
 
 const Chats = () => {
+  const [chats, setChats] = useState([]);
+  const { currentUser } = UserAuth();
+
+  useEffect(() => {
+    const getChats = () => {
+      const unsub = onSnapshot(doc(db, "userChats", currentUser.uid), (doc) => {
+        setChats(doc.data());
+      });
+
+      return () => {
+        unsub();
+      };
+    };
+
+    currentUser.uid && getChats();
+  }, [currentUser.uid]);
+
+  console.log(Object.entries(chats));
+
   return (
     <div className="chats">
-      <div className="user__chat">
-        <img
-          src="https://photographylife.com/wp-content/uploads/2017/01/Best-of-2016-Nasim-Mansurov-20.jpg"
-          alt=""
-        />
-        <div className="user__chat_info">
-          <span>Jane</span>
-          <p>hello</p>
+      {Object.entries(chats).map((chat) => (
+        <div className="user__chat" key={chat[0]}>
+          <img src={chat[1].userInfo.photoURL} alt="" />
+          <div className="user__chat_info">
+            <span>{chat[1].userInfo.displayName}</span>
+            <p>{chat[1].userInfo.lastMessage?.text}</p>
+          </div>
         </div>
-      </div>
-      <div className="user__chat">
-        <img
-          src="https://photographylife.com/wp-content/uploads/2017/01/Best-of-2016-Nasim-Mansurov-20.jpg"
-          alt=""
-        />
-        <div className="user__chat_info">
-          <span>Jane</span>
-          <p>hello</p>
-        </div>
-      </div>
-      <div className="user__chat">
-        <img
-          src="https://static.boredpanda.com/blog/wp-content/uploads/2014/01/animal-children-photography-elena-shumilova-2.jpg"
-          alt=""
-        />
-        <div className="user__chat_info">
-          <span>Jane</span>
-          <p>hello</p>
-        </div>
-      </div>
+      ))}
     </div>
   );
 };
