@@ -4,12 +4,16 @@ import { FaUserPlus } from "react-icons/fa";
 import { MdOutlineMoreHoriz } from "react-icons/md";
 import Messages from "./Messages";
 import Input from "./Input";
+import { UserAuth } from "../contexts/AuthContext";
+import { ChiChatContext } from "../contexts/ChatContext";
 
 const Chat = () => {
+  const { data } = ChiChatContext();
+
   return (
     <div className="chat">
       <div className="chat__info">
-        <span>Jane</span>
+        <span>{data.user?.displayName}</span>
         <div className="chat__icons">
           <BsCameraVideoFill className="icon" size={18} />
           <FaUserPlus className="icon" size={18} />
