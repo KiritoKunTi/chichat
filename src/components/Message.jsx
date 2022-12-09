@@ -1,21 +1,36 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { UserAuth } from "../contexts/AuthContext";
+import { ChiChatContext } from "../contexts/ChatContext";
 
-const Message = () => {
+const Message = ({ message }) => {
+  const { currentUser } = UserAuth();
+  const { data } = ChiChatContext();
+
+  const ref = useRef();
+
+  useEffect(() => {
+    ref.current?.scrollIntoView({ behavior: "smooth" });
+  }, [message]);
+
   return (
-    <div className="message owner">
+    <div
+      ref={ref}
+      className={`message ${currentUser.uid === message.senderID && "owner"}`}
+    >
       <div className="message__info">
         <img
-          src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg"
+          src={
+            currentUser.uid === message.senderID
+              ? currentUser.photoURL
+              : data.user.photoURL
+          }
           alt=""
         />
-        <span>just now</span>
+        <span>just</span>
       </div>
       <div className="message__content">
-        <p>hello</p>
-        <img
-          src="https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?cs=srgb&dl=pexels-anjana-c-674010.jpg&fm=jpg"
-          alt=""
-        />
+        <p>{message.text}</p>
+        {message.img && <img src={message.img} alt="" />}
       </div>
     </div>
   );

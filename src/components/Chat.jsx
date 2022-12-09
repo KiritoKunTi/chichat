@@ -4,7 +4,6 @@ import { FaUserPlus } from "react-icons/fa";
 import { MdOutlineMoreHoriz } from "react-icons/md";
 import Messages from "./Messages";
 import Input from "./Input";
-import { UserAuth } from "../contexts/AuthContext";
 import { ChiChatContext } from "../contexts/ChatContext";
 
 const Chat = () => {
